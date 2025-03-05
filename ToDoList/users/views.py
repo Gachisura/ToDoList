@@ -1,13 +1,13 @@
 from rest_framework.response import Response
 from rest_framework import status, generics
 from .models import User, ToDoList
-from .serializers import UserSerializer, ToDoListSerializer
+from .serializers import UserRegSerializer, UserLoginSerializer, ToDoListSerializer
 import math
 
 
-class UserList(generics.ListCreateAPIView):
+class UserReg(generics.ListCreateAPIView):
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = UserRegSerializer
 
     def create_user(self, request):
         serializer = self.serializer_class(data=request.data)
@@ -15,6 +15,13 @@ class UserList(generics.ListCreateAPIView):
             self.perform_create(serializer)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserLogin(generics.GenericAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserLoginSerializer
+
+    pass
 
 
 class ToDoBoard(generics.GenericAPIView):
